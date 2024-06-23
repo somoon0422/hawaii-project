@@ -16,7 +16,7 @@ st.write(
     "Here is a sample question and response set."
 )
 
-data = pd.read_csv('/workspaces/hawaii-project/Total_News.csv')
+data = pd.read_csv('Total_News.csv')
 
 df = pd.DataFrame(data)
 
@@ -29,66 +29,66 @@ st.write(
     "select some values in the `Issue Category` and check `Mark as annotated?` once finished 👇"
 )
 
-df["Issue"] = [True, True, True, False]
-df["Category"] = ["Accuracy", "Accuracy", "Completeness", ""]
+# df["Issue"] = [True, True, True, False]
+# df["Category"] = ["Accuracy", "Accuracy", "Completeness", ""]
 
-new_df = st.data_editor(
-    df,
-    column_config={
-        "Questions": st.column_config.TextColumn(width="medium", disabled=True),
-        "Answers": st.column_config.TextColumn(width="medium", disabled=True),
-        "Issue": st.column_config.CheckboxColumn("Mark as annotated?", default=False),
-        "Category": st.column_config.SelectboxColumn(
-            "Issue Category",
-            help="select the category",
-            options=["Accuracy", "Relevance", "Coherence", "Bias", "Completeness"],
-            required=False,
-        ),
-    },
-)
+# new_df = st.data_editor(
+#     df,
+#     column_config={
+#         "Questions": st.column_config.TextColumn(width="medium", disabled=True),
+#         "Answers": st.column_config.TextColumn(width="medium", disabled=True),
+#         "Issue": st.column_config.CheckboxColumn("Mark as annotated?", default=False),
+#         "Category": st.column_config.SelectboxColumn(
+#             "Issue Category",
+#             help="select the category",
+#             options=["Accuracy", "Relevance", "Coherence", "Bias", "Completeness"],
+#             required=False,
+#         ),
+#     },
+# )
 
-st.write(
-    "You will notice that we changed our dataframe and added new data. "
-    "Now it is time to visualize what we have annotated!"
-)
+# st.write(
+#     "You will notice that we changed our dataframe and added new data. "
+#     "Now it is time to visualize what we have annotated!"
+# )
 
-st.divider()
+# st.divider()
 
-st.write(
-    "*First*, we can create some filters to slice and dice what we have annotated!"
-)
+# st.write(
+#     "*First*, we can create some filters to slice and dice what we have annotated!"
+# )
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    issue_filter = st.selectbox("Issues or Non-issues", options=new_df.Issue.unique())
-with col2:
-    category_filter = st.selectbox(
-        "Choose a category",
-        options=new_df[new_df["Issue"] == issue_filter].Category.unique(),
-    )
+# col1, col2 = st.columns([1, 1])
+# with col1:
+#     issue_filter = st.selectbox("Issues or Non-issues", options=new_df.Issue.unique())
+# with col2:
+#     category_filter = st.selectbox(
+#         "Choose a category",
+#         options=new_df[new_df["Issue"] == issue_filter].Category.unique(),
+#     )
 
-st.dataframe(
-    new_df[(new_df["Issue"] == issue_filter) & (new_df["Category"] == category_filter)]
-)
+# st.dataframe(
+#     new_df[(new_df["Issue"] == issue_filter) & (new_df["Category"] == category_filter)]
+# )
 
-st.markdown("")
-st.write(
-    "*Next*, we can visualize our data quickly using `st.metrics` and `st.bar_plot`"
-)
+# st.markdown("")
+# st.write(
+#     "*Next*, we can visualize our data quickly using `st.metrics` and `st.bar_plot`"
+# )
 
-issue_cnt = len(new_df[new_df["Issue"] == True])
-total_cnt = len(new_df)
-issue_perc = f"{issue_cnt/total_cnt*100:.0f}%"
+# issue_cnt = len(new_df[new_df["Issue"] == True])
+# total_cnt = len(new_df)
+# issue_perc = f"{issue_cnt/total_cnt*100:.0f}%"
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    st.metric("Number of responses", issue_cnt)
-with col2:
-    st.metric("Annotation Progress", issue_perc)
+# col1, col2 = st.columns([1, 1])
+# with col1:
+#     st.metric("Number of responses", issue_cnt)
+# with col2:
+#     st.metric("Annotation Progress", issue_perc)
 
-df_plot = new_df[new_df["Category"] != ""].Category.value_counts().reset_index()
+# df_plot = new_df[new_df["Category"] != ""].Category.value_counts().reset_index()
 
-st.bar_chart(df_plot, x="Category", y="count")
+# st.bar_chart(df_plot, x="Category", y="count")
 
 st.write(
     "Here we are at the end of getting started with streamlit! Happy Streamlit-ing! :balloon:"
