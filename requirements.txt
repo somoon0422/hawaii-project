@@ -1,2 +1,6 @@
 streamlit
 wordcloud
+TextBlob
+pandas
+scikit-learn
+matplotlib
