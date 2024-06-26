@@ -6,6 +6,3 @@ scikit-learn
 matplotlib
 webdriver_manager
 selenium
-datetime
-re
-logging
