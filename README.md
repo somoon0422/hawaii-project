@@ -18,3 +18,25 @@ and charts.
    ```
    $ streamlit run streamlit_app.py
    ```
+
+
+### 폴더 구조 및 파일 배치
+
+- apps/
+   - analysis.py - 분석페이지
+   - crawling.py - 크롤링 페이지
+- china/
+  - __init__.py
+  - crawl_china.py
+  - crawl_vietnam.py
+  - crawl_korea.py
+  - crawl_usa.py
+  - crawl_taiwan.py
+  - crawl_readable.py
+- multiapp.py
+- streamlit_app.py (main코드)
+- requirements.txt
+- README.md
+
+
+

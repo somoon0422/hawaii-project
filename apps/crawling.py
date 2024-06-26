@@ -1,72 +1,12 @@
+import logging
 import pandas as pd
 import streamlit as st
-
-def crawl_china():
-    try:
-        # China 크롤링 코드 작성
-        # 예: crawl_data = your_china_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['China'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during China crawling: {str(e)}")
-
-def crawl_vietnam():
-    try:
-        # Vietnam 크롤링 코드 작성
-        # 예: crawl_data = your_vietnam_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['Vietnam'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during Vietnam crawling: {str(e)}")
-
-def crawl_korea():
-    try:
-        # Korea 크롤링 코드 작성
-        # 예: crawl_data = your_korea_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['Korea'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during Korea crawling: {str(e)}")
-
-def crawl_usa():
-    try:
-        # USA 크롤링 코드 작성
-        # 예: crawl_data = your_usa_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['USA'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during USA crawling: {str(e)}")
-
-def crawl_taiwan():
-    try:
-        # Taiwan 크롤링 코드 작성
-        # 예: crawl_data = your_taiwan_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['Taiwan'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during Taiwan crawling: {str(e)}")
-
-def crawl_readable():
-    try:
-        # The readable 크롤링 코드 작성
-        # 예: crawl_data = your_readable_crawling_function()
-        crawl_data = pd.DataFrame({'Country': ['The readable'], 'Data': ['Sample data']})  # 예시 데이터
-        # 여기서 데이터베이스에 저장하는 코드를 추가할 수 있음
-        save_to_database(crawl_data)
-    except Exception as e:
-        print(f"Error occurred during The readable crawling: {str(e)}")
-
-def save_to_database(data):
-    # 여기에 데이터베이스에 저장하는 코드를 추가하세요
-    # 예: data.to_sql('table_name', con=your_database_connection, if_exists='append')
-    print("Saving data to database...")
-    print(data)  # 예시로 데이터 출력
-
+from china.crawl_china import crawl_china
+from china.crawl_vietnam import crawl_vietnam
+from china.crawl_korea import crawl_korea
+from china.crawl_usa import crawl_usa
+from china.crawl_taiwan import crawl_taiwan
+from china.crawl_readable import crawl_readable
 
 def app():
     st.title('Crawling App')
@@ -77,12 +17,54 @@ def app():
     if st.button('Crawling Start!'):
         st.write(f"Starting crawling for {selected_country}...")
         if selected_country == 'China':
-            crawl_china()
+            try:
+                crawl_data = crawl_china()
+                if crawl_data is not None:
+                    st.success('Crawling completed!')
+                    st.write(crawl_data)
+                    st.markdown(get_table_download_link(crawl_data, 'China_News.csv'), unsafe_allow_html=True)
+                else:
+                    st.error('Error occurred during crawling. Please check the logs for details.')
+            except Exception as e:
+                logging.error(f"Error occurred during crawling for China: {str(e)}")
+                st.error('Error occurred during crawling. Please check the logs for details.')
         elif selected_country == 'Vietnam':
             crawl_vietnam()
-        # 다른 국가에 대한 처리도 유사하게 구현
+        elif selected_country == 'Korea':
+            crawl_korea()
+        elif selected_country == 'USA':
+            crawl_usa()
+        elif selected_country == 'Taiwan':
+            crawl_taiwan()
+        elif selected_country == 'The readable':
+            crawl_readable()
 
     if st.button('Merge All Data!'):
         st.write("Merging data from all countries...")
-        # 여기에 데이터 합치는 코드 추가
+        try:
+            merge_data()
+            st.success("Data merging completed!")
+        except Exception as e:
+            logging.error(f"Error occurred during data merging: {str(e)}")
+            st.error(f"Error occurred during data merging: {str(e)}")
 
+def merge_data():
+    # Merge all CSV files
+    eco = pd.read_csv('China_Economy.csv')
+    soc = pd.read_csv('China_Society.csv')
+    wor = pd.read_csv('China_World.csv')
+    cul = pd.read_csv('China_Culture.csv')
+    spo = pd.read_csv('China_Sports.csv')
+    mil = pd.read_csv('China_Military.csv')
+
+    df = pd.concat([eco, soc, wor, cul, spo, mil])
+    df.to_csv('China_News.csv', index=False)
+
+def get_table_download_link(df, filename):
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()
+    href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download {filename} CSV File</a>'
+    return href
+
+if __name__ == '__main__':
+    app()
