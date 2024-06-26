@@ -1,5 +1,4 @@
-# 📊 Data evaluation template
-
+# 📊 Hawaii Project News Analysis
 A simple Streamlit app showing how to evaluate and annotate data, using dataframes
 and charts. 
 
