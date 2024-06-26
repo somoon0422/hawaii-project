@@ -1,18 +1,25 @@
 import streamlit as st
-from apps import crawling, analysis
+from apps import analysis
+from apps import crawling
 
 def main():
-    st.title('Main Page')
+    st.title('Welcome To Hawaii Project!')
 
-    option = st.sidebar.selectbox(
-        'Select an app',
-        ('Crawling App', 'Analysis Dashboard')
-    )
+    st.sidebar.title('Menu')
+    page = st.sidebar.selectbox('선택하세요', ['Main Page','visualization', 'Crawling Page' ])
 
-    if option == 'Crawling App':
-        crawling.app()
-    elif option == 'Analysis Dashboard':
+    if page == 'Main Page':
+        st.write("""
+            ## 데이터 크롤링 및 분석 애플리케이션
+            이 애플리케이션은 데이터 크롤링과 분석을 위한 간단한 툴입니다. 
+            왼쪽의 사이드바에서 원하는 페이지를 선택하세요.
+        """)
+    elif page == 'visualization':
         analysis.app()
+
+    elif page == 'Crawling Page':
+        crawling.app()
+
 
 if __name__ == '__main__':
     main()
