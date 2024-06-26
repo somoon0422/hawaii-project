@@ -6,7 +6,7 @@ def main():
     st.title('🎡Welcome To Hawaii Project!')
 
     st.sidebar.title('Menu')
-    page = st.sidebar.selectbox('선택하세요', ['Main Page','visualization', 'Crawling Page' ])
+    page = st.sidebar.selectbox('선택하세요', ['Main Page','Visualization', 'Crawling Page' ])
 
     if page == 'Main Page':
         st.write(
@@ -19,7 +19,7 @@ def main():
             """
         )
 
-        
+
 
 
     elif page == 'Visualization':
