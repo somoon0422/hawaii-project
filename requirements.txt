@@ -9,7 +9,7 @@ selenium
 nltk
 plotly
 numpy==1.19.5
-scattertext==0.1.4.1
+scattertext==0.1.4
 spacy==3.1.0
 thinc==8.2.0
 networkx
