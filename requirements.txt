@@ -11,7 +11,7 @@ plotly
 numpy
 scattertext
 spacy==3.1.4
-thinc==8.1.5
+thinc==8.0.12
 networkx
 
 
