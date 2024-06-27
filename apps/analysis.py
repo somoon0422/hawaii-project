@@ -399,57 +399,57 @@ def app():
             st.plotly_chart(fig)
 
 
-        if "네트워크 그래프" in selected_options:
-            # 네트워크 그래프
-            st.subheader("네트워크 그래프")
-            vectorizer = CountVectorizer(stop_words=list(stop_words))
-            word_count = vectorizer.fit_transform(country_data['text'])
-            words = vectorizer.get_feature_names_out()
-            word_freq = dict(zip(words, word_count.sum(axis=0).A1))
+        # if "네트워크 그래프" in selected_options:
+        #     # 네트워크 그래프
+        #     st.subheader("네트워크 그래프")
+        #     vectorizer = CountVectorizer(stop_words=list(stop_words))
+        #     word_count = vectorizer.fit_transform(country_data['text'])
+        #     words = vectorizer.get_feature_names_out()
+        #     word_freq = dict(zip(words, word_count.sum(axis=0).A1))
 
-            # Co-occurrence matrix 계산
-            co_occurrence_matrix = (word_count.T * word_count)
-            co_occurrence_matrix.setdiag(0)
-            co_occurrence_df = pd.DataFrame(co_occurrence_matrix.toarray(), index=words, columns=words)
+        #     # Co-occurrence matrix 계산
+        #     co_occurrence_matrix = (word_count.T * word_count)
+        #     co_occurrence_matrix.setdiag(0)
+        #     co_occurrence_df = pd.DataFrame(co_occurrence_matrix.toarray(), index=words, columns=words)
 
-            # 그래프 생성
-            G = nx.from_pandas_adjacency(co_occurrence_df)
-            pos = nx.spring_layout(G, k=0.1)
-            edge_trace = []
-            node_trace = go.Scatter(
-                x=[], y=[], text=[], mode='markers+text',
-                textposition="bottom center",
-                hoverinfo='text', marker=dict(
-                    showscale=True, colorscale='YlGnBu', color=[], size=10,
-                    colorbar=dict(thickness=15, title='Node Connections', xanchor='left', titleside='right')))
+        #     # 그래프 생성
+        #     G = nx.from_pandas_adjacency(co_occurrence_df)
+        #     pos = nx.spring_layout(G, k=0.1)
+        #     edge_trace = []
+        #     node_trace = go.Scatter(
+        #         x=[], y=[], text=[], mode='markers+text',
+        #         textposition="bottom center",
+        #         hoverinfo='text', marker=dict(
+        #             showscale=True, colorscale='YlGnBu', color=[], size=10,
+        #             colorbar=dict(thickness=15, title='Node Connections', xanchor='left', titleside='right')))
 
-            for edge in G.edges():
-                x0, y0 = pos[edge[0]]
-                x1, y1 = pos[edge[1]]
-                edge_trace.append(go.Scatter(
-                    x=[x0, x1, None], y=[y0, y1, None], line=dict(width=0.5, color='#888'),
-                    hoverinfo='none', mode='lines'))
+        #     for edge in G.edges():
+        #         x0, y0 = pos[edge[0]]
+        #         x1, y1 = pos[edge[1]]
+        #         edge_trace.append(go.Scatter(
+        #             x=[x0, x1, None], y=[y0, y1, None], line=dict(width=0.5, color='#888'),
+        #             hoverinfo='none', mode='lines'))
 
-            for node in G.nodes():
-                x, y = pos[node]
-                node_trace['x'] += (x,)
-                node_trace['y'] += (y,)
-                node_trace['marker']['color'] += (G.degree(node),)
-                node_info = f"{node} (# of connections: {G.degree(node)})"
-                node_trace['text'] += (node_info,)
+        #     for node in G.nodes():
+        #         x, y = pos[node]
+        #         node_trace['x'] += (x,)
+        #         node_trace['y'] += (y,)
+        #         node_trace['marker']['color'] += (G.degree(node),)
+        #         node_info = f"{node} (# of connections: {G.degree(node)})"
+        #         node_trace['text'] += (node_info,)
 
-            fig = go.Figure(data=edge_trace + [node_trace], layout=go.Layout(
-                title='단어 네트워크 그래프', titlefont_size=16, showlegend=False, hovermode='closest',
-                margin=dict(b=20, l=5, r=5, t=40),
-                annotations=[dict(text="단어 간의 연관성을 보여주는 네트워크 그래프입니다.", showarrow=False, xref="paper", yref="paper", x=0.005, y=-0.002)],
-                xaxis=dict(showgrid=False, zeroline=False), yaxis=dict(showgrid=False, zeroline=False)))
+        #     fig = go.Figure(data=edge_trace + [node_trace], layout=go.Layout(
+        #         title='단어 네트워크 그래프', titlefont_size=16, showlegend=False, hovermode='closest',
+        #         margin=dict(b=20, l=5, r=5, t=40),
+        #         annotations=[dict(text="단어 간의 연관성을 보여주는 네트워크 그래프입니다.", showarrow=False, xref="paper", yref="paper", x=0.005, y=-0.002)],
+        #         xaxis=dict(showgrid=False, zeroline=False), yaxis=dict(showgrid=False, zeroline=False)))
 
-            st.plotly_chart(fig)
+        #     st.plotly_chart(fig)
 
 
 
         # CSV 다운로드 링크 제공
-        st.markdown(get_table_download_link(df), unsafe_allow_html=True)
+        # st.markdown(get_table_download_link(df), unsafe_allow_html=True)
 
 if __name__ == "__main__":
     app()
