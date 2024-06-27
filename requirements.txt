@@ -10,8 +10,6 @@ nltk
 plotly
 numpy
 scattertext==0.2.1
-# spacy==3.2.5
-# thinc==8.0.12
+spacy==3.2.5
+thinc
 networkx
-
-
