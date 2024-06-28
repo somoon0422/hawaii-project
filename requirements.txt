@@ -13,4 +13,4 @@ networkx
 scipy
 pandas
 spacy==3.0.6
-scattertext
+#scattertext

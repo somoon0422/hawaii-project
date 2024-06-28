@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from scattertext import CorpusFromPandas, produce_scattertext_explorer
+# from scattertext import CorpusFromPandas, produce_scattertext_explorer
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
