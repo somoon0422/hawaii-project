@@ -8,9 +8,9 @@ selenium
 nltk
 plotly
 numpy
-thinc
 networkx
 scipy
 pandas
-spacy==3.0.6
+#spacy==3.0.6
 #scattertext
+#thinc
