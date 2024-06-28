@@ -208,7 +208,7 @@ def crawl_china():
             print(f"Error occurred during China crawling: {str(e)}")
 
     # 6개 csv 파일을 하나로 합치기
-    # combined_df = pd.concat(dfs, ignore_index=True)
+    combined_df = pd.concat(dfs, ignore_index=True)
     combined_df.to_csv('China_News.csv', index=False)
     print('전체 카테고리 크롤링 완료')
 
