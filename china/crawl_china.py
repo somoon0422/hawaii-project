@@ -7,7 +7,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 import logging
 import pandas as pd
 import re
+import time
 from datetime import datetime
+
 
 # 카테고리별 URL 설정
 categories = {
@@ -48,6 +50,8 @@ def crawl_articles(category):
         
         try:
             for j in range(1, 21):
+                # 안정화
+                time.sleep(3)
                 # 기사 페이지
                 headline = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.XPATH, f'/html/body/div/div[5]/div[1]/ul/li[{j}]/a'))
@@ -87,28 +91,34 @@ def crawl_articles(category):
                     
                 except Exception as e:
                     logging.error(e)
-                    print(e)
+                    print('ERROR : Crawling : get reporter :', e)
                     Reporter.append(None)
                     
                 # Category  
                 Category.append(category.capitalize())
                 
                 # Submission Date
-                submission_time_element = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//div[@class="origin cf"]/span'))
-                )
-                submission_time_text = submission_time_element.text
-                
-                match = time_pattern.search(submission_time_text)
-                
-                if match:
-                    time_str = match.group(1)
-                    date_str = match.group(2)
-                    date = datetime.strptime(date_str, '%B %d, %Y').strftime('%Y%m%d')
+                try:
+                    submission_time_element = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//div[@class="origin cf"]/span'))
+                    )
+                    submission_time_text = submission_time_element.text
                     
-                    SubmissionDate.append(int(date))
-                    SubmissionTime.append(int(time_str.replace(':', '')))
-                else:
+                    match = time_pattern.search(submission_time_text)
+                    
+                    if match:
+                        time_str = match.group(1)
+                        date_str = match.group(2)
+                        date = datetime.strptime(date_str, '%B %d, %Y').strftime('%Y%m%d')
+                        
+                        SubmissionDate.append(int(date))
+                        SubmissionTime.append(int(time_str.replace(':', '')))
+                    else:
+                        SubmissionDate.append(None)
+                        SubmissionTime.append(None)
+                except Exception as e :
+                    logging.error(e)
+                    print('ERROR : Crawling : get submission date / time :', e)
                     SubmissionDate.append(None)
                     SubmissionTime.append(None)
                     
@@ -119,28 +129,40 @@ def crawl_articles(category):
                 UpdataTime.append(None)
                 
                 # titles
-                title = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '/html/body/div/div[3]/h1'))
-                )
-                titles.append(title.text)
+                try:
+                    title = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '/html/body/div/div[3]/h1'))
+                    )
+                    titles.append(title.text)
+                except Exception as e:
+                    print('ERROR : Crawling : get title :', e)
+                    titles.append(None)
                 
                 # articles
-                article_box = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//div[@class="w860 d2txtCon cf"]'))
-                )
-                paragraphs = article_box.find_elements(By.TAG_NAME, 'p')
-                article = ''
-                for paragraph in paragraphs:
-                    article += paragraph.text + '\n'
-                articles.append(article)
+                try:
+                    article_box = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//div[@class="w860 d2txtCon cf"]'))
+                    )
+                    paragraphs = article_box.find_elements(By.TAG_NAME, 'p')
+                    article = ''
+                    for paragraph in paragraphs:
+                        article += paragraph.text + '\n'
+                    articles.append(article)
+                except Exception as e:
+                    print('ERROR : Crawling : get articles :', e)
+                    articles.append(None)
                 
                 # Size
-                Size.append(len(article))
+                try:
+                    Size.append(len(article))
+                except Exception as e:
+                    print('ERROR : Crawling : get size :', e)
+                    articles.append(None)
                 
                 # url
                 urls.append(headline_href)
                 
-                print(f'{j}번째 기사 크롤링 완료')
+                print(f'{j}번째 기사 크롤링 완료', end='\r')
                 
                 # 새 창 닫기
                 driver.close()
@@ -150,7 +172,7 @@ def crawl_articles(category):
                 
         except Exception as e:
             logging.error(e)
-            print(e)
+            print('ERROR : Crawling : ',e)
             # 다음 단계로 넘어감 
             continue
         
@@ -174,19 +196,26 @@ def crawl_articles(category):
     return df
 
 def crawl_china():
-    try:
-        dfs = []
-        for category in categories.keys():
+
+    dfs = []    
+    for category in categories.keys():
+        try :
             category_data = crawl_articles(category)
             category_data.to_csv(f'China_{category.capitalize()}.csv', index=False)
             dfs.append(category_data)
             print(f'{category} 카테고리 크롤링 완료')
+        except Exception as e:
+            print(f"Error occurred during China crawling: {str(e)}")
 
-        # 6개 csv 파일을 하나로 합치기
-        combined_df = pd.concat(dfs, ignore_index=True)
-        combined_df.to_csv('China_News.csv', index=False)
-        print('전체 카테고리 크롤링 완료')
+    # 6개 csv 파일을 하나로 합치기
+    # combined_df = pd.concat(dfs, ignore_index=True)
+    combined_df.to_csv('China_News.csv', index=False)
+    print('전체 카테고리 크롤링 완료')
 
-        return combined_df
-    except Exception as e:
-        print(f"Error occurred during China crawling: {str(e)}")
+    return combined_df
+
+
+
+
+if __name__ == '__main__' :
+    crawl_china()
