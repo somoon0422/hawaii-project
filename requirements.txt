@@ -1,7 +1,6 @@
 streamlit
 wordcloud
 TextBlob
-pandas
 scikit-learn
 matplotlib
 webdriver_manager
@@ -18,3 +17,9 @@ typing-extensions==4.5.0
 textblob
 webdriver_manager
 selenium
+networkx
+scipy
+pandas
+#spacy==3.0.6
+#scattertext
+#thinc
