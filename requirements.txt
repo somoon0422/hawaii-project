@@ -13,6 +13,7 @@ spacy==3.2.5
 thinc
 networkx
 typing-extensions==4.5.0
+chromedriver_autoinstaller
 webdriver_manager
 scipy
 bs4
