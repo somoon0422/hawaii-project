@@ -4,7 +4,6 @@ TextBlob
 scikit-learn
 matplotlib
 mtranslate 
-webdriver_manager
 selenium
 nltk
 plotly
@@ -13,12 +12,8 @@ scattertext==0.2.1
 spacy==3.2.5
 thinc
 networkx
-plotly
 typing-extensions==4.5.0
-textblob
 webdriver_manager
-selenium
-networkx
 scipy
 bs4
 pandas

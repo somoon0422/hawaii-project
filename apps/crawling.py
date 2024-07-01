@@ -35,7 +35,7 @@ def app():
             crawl_vietnam()
             # 나머지 국가에 대한 크롤링 함수 호출 추가 필요
         
-        elif selected_country == 'South Korea':
+        elif selected_country == 'SouthKorea':
             try:
                 crawl_data = crawl_korea()
                 if crawl_data is not None:
