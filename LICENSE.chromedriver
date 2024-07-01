@@ -2084,15 +2084,6 @@ Crashpad
    limitations under the License.
 
 --------------------
-getopt
---------------------
-Copyright (C) 1997 Gregory Pietsch
-
-[These files] are hereby placed in the public domain without restrictions. Just
-give the author credit, don't claim you wrote it or prevent anyone else from
-using it.
-
---------------------
 CRC32C
 --------------------
 Copyright 2017, The CRC32C Authors.

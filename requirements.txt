@@ -3,6 +3,7 @@ wordcloud
 TextBlob
 scikit-learn
 matplotlib
+mtranslate 
 webdriver_manager
 selenium
 nltk
@@ -19,6 +20,7 @@ webdriver_manager
 selenium
 networkx
 scipy
+bs4
 pandas
 #spacy==3.0.6
 #scattertext
